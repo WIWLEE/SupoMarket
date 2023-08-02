@@ -1,4 +1,4 @@
-class User {
+class AUser {
   String? id;
   String? password;
   String? userName;
@@ -8,7 +8,7 @@ class User {
   bool? isUserLogin;
   bool? isMaster;
 
-  User
+  AUser
     ({
       required this.id,
       required this.password,
@@ -20,23 +20,13 @@ class User {
       required this.isMaster,
     });
 
-}
-
-class AUser {
-  String? email;
-  String? password;
-  String? userName;
-  String? userSchoolNum;
-
-  AUser({this.email, this.password, this.userName, this.userSchoolNum});
-
-  //toMap 함수 -> Map 구조로 변환
   Map<String, dynamic> toMap(){
     return {
-      'email' : email,
+      'email' : id,
       'password' : password,
       'userName' : userName,
       'userSchoolNum' : userSchoolNum,
     };
   }
+
 }

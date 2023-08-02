@@ -13,13 +13,13 @@ var mySetting = Setting(
   selectedCategoryAlarm: "없음",
 );
 
-var myUserInfo = User(
-    id: "",
-    password : "",
-    userName: "",
-    imagePath: "assets/images/user.png",
-    userSchoolNum: "",
-    userGoodsNum: 0,
-    isUserLogin: false, //이걸로 초기 페이지 조절 가능
-    isMaster: true,
+AUser myUserInfo = AUser(
+  id: "",
+  password : "",
+  userName: "",
+  imagePath: "https://firebasestorage.googleapis.com/v0/b/supomarket-b55d0.appspot.com/o/assets%2Fimages%2Fuser.png?alt=media&token=3b060089-e652-4e59-9900-54d59349af96",
+  userSchoolNum: "",
+  userGoodsNum: 0,
+  isUserLogin: false,
+  isMaster: true,
 );
