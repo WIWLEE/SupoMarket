@@ -55,7 +55,7 @@ class _ControlPageState extends State<ControlPage>
   TabController? controller;
   List<ChatRoom> chatRoomList = List.empty(growable: true);
   late AUser otherUser;
-  //late AnimationController _bellController;
+  bool hasRequest = false;
 
   @override
   void initState() {
@@ -83,8 +83,6 @@ class _ControlPageState extends State<ControlPage>
     setState(() {
       myUserInfo.userItemNum ??= 0; //널이면 0 초기화
     });
-
-   // _bellController = AnimationController(vsync: this, duration: const Duration(seconds: 1))..repeat();
   }
 
   @override
@@ -100,12 +98,12 @@ class _ControlPageState extends State<ControlPage>
   void dispose() {
     debugPrint("control_dispose");
     controller!.dispose();
-  //  _bellController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
           elevation: 0.0,
@@ -114,6 +112,11 @@ class _ControlPageState extends State<ControlPage>
           title: Stack(
             children: [
               SupoTitle2(),
+              Positioned(
+                right : 40,
+                top : 0,
+                child: ReallyBoughtPopUp(itemId: '126', traderId: '9', itemName: '아이템제목', traderName: '거래자이름',),
+              ),
               Positioned(
                 right: 0,
                 top : 0,
@@ -132,7 +135,7 @@ class _ControlPageState extends State<ControlPage>
                       }),
                 ),
               ),
-              ReallyBoughtPopUp(itemId: '126', traderId: '9', itemName: '아이템제목', traderName: '거래자이름',),
+              //ReallyBoughtPopUp(itemId: '126', traderId: '9', itemName: '아이템제목', traderName: '거래자이름',),
             ],
           ),
           backgroundColor: Colors.white),
@@ -208,5 +211,92 @@ class _ControlPageState extends State<ControlPage>
     setState(() {
       homePageBuilder = getItem(1, SortType.DATEASCEND, ItemStatus.TRADING);
     });
+  }
+
+  Future<bool> getRequestList() async {
+
+    ItemType? tempItemType;
+    ItemStatus? tempItemStatus;
+    ItemQuality? tempItemQuality;
+    String? tempSellerName;
+    String? tempSellerSchoolNum;
+    int pageSize = 10;
+
+    String token = await FirebaseAuth.instance.currentUser?.getIdToken() ?? '';
+    Dio dio = Dio();
+    print('getItemFavorite');
+    dio.options.headers['Authorization'] = 'Bearer $token';
+    String url = 'http://kdh.supomarket.com/auth/request';
+
+    try {
+      Response response = await dio.get(url);
+      dynamic jsonData = response.data;
+
+      if (jsonData.toString() != "true") {
+        debugPrint("List 개수 update");
+
+        setState(() {
+          //isMoreRequesting = true;
+        });
+
+        await Future.delayed(Duration(milliseconds: 100));
+
+        for (var data in jsonData) {
+          int id = data['id'] as int;
+          String title = data['title'] as String;
+          String description = data['description'] as String;
+          int price = data['price'] as int;
+
+          String status = data['status'] as String; //--> 이 부분은 수정 코드 주면 그때 실행하기
+          tempItemStatus = convertStringToEnum(status);
+
+          String quality = data['quality'] as String;
+          tempItemQuality = convertStringToEnum(quality);
+
+          String category = data['category'] as String;
+          tempItemType = convertStringToEnum(category);
+
+          String updatedAt = data['updatedAt'] as String;
+          List<String> imageUrl = List<String>.from(data['ImageUrls']);
+
+          // 사진도 받아야하는데
+          DateTime dateTime = DateTime.parse(updatedAt);
+
+          // 시간 어떻게 받아올지 고민하기!!!!!!
+          // 그리고 userId 는 현재 null 상태 해결해야함!!!
+          itemList.add(Item(
+              sellingTitle: title,
+              itemType: tempItemType,
+              itemQuality: tempItemQuality!,
+              sellerName: "정태형",
+              sellingPrice: price,
+              uploadDate: "10일 전",
+              uploadDateForCompare: dateTime,
+              itemDetail: description,
+              sellerImage:
+              "https://firebasestorage.googleapis.com/v0/b/supomarket-b55d0.appspot.com/o/assets%2Fimages%2Fuser.png?alt=media&token=3b060089-e652-4e59-9900-54d59349af96",
+              isLiked: false,
+              sellerSchoolNum: "20220000",
+              imageListA: [],
+              imageListB: imageUrl,
+              itemStatus: tempItemStatus!,
+              itemID: id));
+        }
+
+        //await moreSpaceFunction();
+
+        setState(() {
+          // isMoreRequesting = false;
+        });
+      } else {
+        setState(() {
+          // isEnded = true;
+        });
+      }
+    } catch (e) {
+      print('Error sending GET request : $e');
+    }
+
+    return true;
   }
 }
