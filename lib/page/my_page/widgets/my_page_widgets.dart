@@ -723,8 +723,8 @@ class MyItemCardState extends State<MyItemCard> {
                                                 ),
                                               ),
                                               onPressed: () {
-                                                widget
-                                                    .stateChange(selectedIndex);
+                                                widget.stateChange(selectedIndex);
+                                                Navigator.pop(context);
                                               },
                                               child: const Column(
                                                 mainAxisAlignment:
@@ -928,6 +928,282 @@ class MyItemCard2State extends State<MyItemCard2> {
   }
 }
 
+
+class MyItemCard3 extends StatefulWidget {
+  final Image image;
+  final String title;
+  final String date;
+  final int price;
+
+  final Function() modify;
+  final Function(int) stateChange;
+
+  final String stateText;
+  final bool isFastSell;
+
+  MyItemCard3(
+      {Key? key,
+        required this.image,
+        required this.title,
+        required this.date,
+        required this.price,
+        required this.modify,
+        required this.stateChange,
+        required this.stateText,
+        required this.isFastSell})
+      : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return MyItemCard3State();
+  }
+}
+
+class MyItemCard3State extends State<MyItemCard3> {
+  FixedExtentScrollController? firstController;
+  int initialIndex = 0;
+  int selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    //print("initial : " + widget.stateText.toString());
+    initialIndex = widget.stateText == "급처분 시작" ? 0 : widget.stateText == "예약 중" ? 1 : widget.stateText == "요청된 급처분" ? 2 : 3;
+    firstController = FixedExtentScrollController(initialItem: initialIndex);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      child: Card(
+        margin: const EdgeInsets.only(left: 10, right: 10),
+        color: Colors.grey[200],
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        height: 125,
+                        width: 125,
+                        child: widget.image,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: Text(
+                                widget.title,
+                                style: const TextStyle(
+                                    fontFamily: 'KBO-B', fontSize: 40),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '등록일시',
+                                    style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontFamily: 'KBO-B',
+                                        fontSize: 15),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    widget.date,
+                                    style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontFamily: 'KBO-M',
+                                        fontSize: 15),
+                                  )
+                                ]),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '가격',
+                                  style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontFamily: 'KBO-B',
+                                      fontSize: 15),
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  "${f.format(widget.price)}원",
+                                  style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontFamily: 'KBO-M',
+                                      fontSize: 15),
+                                )
+                              ],
+                            )
+                          ]),
+                    ),
+                  ],
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: TextButton(
+                      onPressed: widget.modify,
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          )),
+                      child: const Center(
+                        child: Text(
+                          '수정하기',
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 150,
+                        child: CupertinoButton(
+                          minSize: 0,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 0),
+                          color: mainColor,
+                          onPressed: () {
+                            showCupertinoModalPopup(
+                                context: context,
+                                builder: (context) {
+                                  return SizedBox(
+                                    height: 400,
+                                    width: 400,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: CupertinoPicker(
+                                            itemExtent: 50,
+                                            backgroundColor: Colors.white,
+                                            scrollController: firstController,
+                                            onSelectedItemChanged: (index) {
+                                              setState(() {
+                                                selectedIndex = index;
+                                              });
+                                            },
+                                            children: List<Widget>.generate(4,
+                                                    (index) {
+                                                  return Center(
+                                                    child: TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text(
+                                                          index == 0
+                                                              ? "급처분 시작"
+                                                              : index == 1
+                                                              ? "예약 중"
+                                                              : index == 2
+                                                              ? "요청된 급처분"
+                                                              : "판매 완료",
+                                                          style: const TextStyle(
+                                                              fontSize: 15,
+                                                              color: Colors.black,
+                                                              fontWeight:
+                                                              FontWeight.bold),
+                                                        )),
+                                                  );
+                                                }),
+                                          ),
+                                        ),
+                                        Container(
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width *
+                                              1,
+                                          height: 60,
+                                          color: Colors.white,
+                                          child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor:
+                                                Color(0xFFB70001),
+                                                padding: EdgeInsets.zero,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      0), // 원하는 둥근 정도 설정
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                widget
+                                                    .stateChange(selectedIndex);
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    '확인',
+                                                    // textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontFamily: 'KBO-M',
+                                                        fontWeight:
+                                                        FontWeight.w800,
+                                                        fontSize: 23),
+                                                  )
+                                                ],
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Text(
+                            widget.stateText,
+                            // "상품 종류 : ${newItem.itemType == ItemType.REFRIGERATOR ? "냉장고" : newItem.itemType == ItemType.MONITOR ? "모니터" : newItem.itemType == ItemType.BOOK ? "책" : newItem.itemType == ItemType.ROOM ? "자취방" : newItem.itemType == ItemType.CLOTHES ? "의류" : "기타"}",
+                            textScaleFactor: 1.0,
+                            style: const TextStyle(
+                                fontFamily: 'KBO-B', fontSize: 15),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class ManagementButton extends StatefulWidget {
   final List<Item> list;

@@ -169,7 +169,7 @@ class _SubMyPageManagementPageState extends State<SubMyPageManagementPage> {
                                                 list![position]),
                                           )));
                                 },
-                                child: MyItemCard(
+                                child: MyItemCard3(
                                   image: list![position].imageListB.isEmpty
                                       ? Image.asset(
                                       "assets/images/main_logo.jpg",
@@ -185,15 +185,15 @@ class _SubMyPageManagementPageState extends State<SubMyPageManagementPage> {
                                   date: list![position].uploadDate ?? "",
                                   price: list![position].sellingPrice!,
                                   stateText: list![position].itemStatus ==
-                                      ItemStatus.TRADING
-                                      ? "판매 중"
+                                      ItemStatus.SUPOFASTSELL
+                                      ? "급처분 시작"
                                       : list![position].itemStatus ==
                                       ItemStatus.RESERVED
                                       ? "예약 중"
                                       : list![position].itemStatus ==
                                       ItemStatus.SOLDOUT
                                       ? "판매 완료"
-                                      : "급처분 중",
+                                      : "요청된 급처분",
                                   isFastSell: list![position].itemStatus ==
                                       ItemStatus.USERFASTSELL,
                                   modify: () async {
@@ -219,7 +219,7 @@ class _SubMyPageManagementPageState extends State<SubMyPageManagementPage> {
                                           DateTime.now(),
                                           imageListA: newData.imageListA,
                                           imageListB: newData.imageListB,
-                                          itemStatus: newData.itemStatus,
+                                          itemStatus: list![position].itemStatus,
                                           itemID: newData.itemID,
                                           itemDetail: newData.itemDetail));
                                       managementPageBuilder =

@@ -83,7 +83,6 @@ class _SubHomePageState extends State<SubHomePage> {
     widget.item.isLiked = myUserInfo.userInterestedId
         .toString()
         ?.contains(widget.item.itemID.toString());
-
     roomID = myUserInfo.userUid! +
         itemUser!.userUid! +
         widget.item.itemID.toString();
@@ -208,7 +207,7 @@ class _SubHomePageState extends State<SubHomePage> {
                                 Navigator.pop(context);
                               },
                               icon:
-                                  Icon(Icons.arrow_back, color: Colors.white54),
+                                  Icon(Icons.arrow_back, color: Colors.black54),
                               iconSize: 30)),
                     ],
                   ),
@@ -282,13 +281,13 @@ class _SubHomePageState extends State<SubHomePage> {
                               ],
                             ),
                             const SizedBox(height: 5),
-                           // const Text(
-                           //    "추가 상세 정보",
-                           //    style: TextStyle(
-                           //      fontFamily: 'KBO-L',
-                           //      fontSize: 18,
-                           //    ),
-                           //  ),
+                           Text(
+                              "신용 학점 : ${itemUser?.userGrade}",
+                              style: TextStyle(
+                                fontFamily: 'KBO-L',
+                                fontSize: 18,
+                              ),
+                            ),
                           ],
                         ),
                       ],

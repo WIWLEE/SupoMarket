@@ -119,7 +119,7 @@ class _SubChattingPageState extends State<SubChattingPage> {
       }
     });
     getMessage();
-    fcmToken;
+
     isListened = false;
     isEnded = false;
     page = 1;
@@ -158,6 +158,10 @@ class _SubChattingPageState extends State<SubChattingPage> {
 
     final response = await client?.getTokenById(roomId: widget.roomID);
     final token = Token(buyerToken: response?.buyerToken, sellerToken: response?.sellerToken);
+
+    //token 갱신
+    token.buyerToken = await getToken(widget.buyerID!);
+    token.sellerToken = await getToken(widget.sellerID!);
 
     print("sellerToken ${token.sellerToken}");
     print("buyerToken ${token.buyerToken}");

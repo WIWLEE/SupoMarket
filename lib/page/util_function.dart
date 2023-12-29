@@ -423,8 +423,10 @@ Future<AUser> getUserInfo(Item item) async {
     List<dynamic> interestedId = jsonData['interestedId'] as List<dynamic>;
     String studentNumber = jsonData['studentNumber'] as String;
     String uid = jsonData['uid'] as String;
+    String grade = jsonData['userGrade'] as String;
+    String userGrade = grade;
 
-    return AUser(id: id, email: Email, userName: username, imagePath: imageUrl, isUserLogin: true, userStatus: convertStringToEnum(userstatus), userStudentNumber: studentNumber, userInterestedId: interestedId, userUid : uid);
+    return AUser(id: id, email: Email, userName: username, imagePath: imageUrl, isUserLogin: true, userStatus: convertStringToEnum(userstatus), userStudentNumber: studentNumber, userInterestedId: interestedId, userUid : uid, userGrade : userGrade);
 
   } catch (e) {
 

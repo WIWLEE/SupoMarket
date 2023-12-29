@@ -41,6 +41,7 @@ Future<void> main() async {
 
   FirebaseMessaging.instance..requestPermission(badge: true, alert: true, sound: true);
 
+  if(Platform.isIOS) FirebaseMessaging.instance.deleteToken();
   FirebaseMessaging fbMsg = FirebaseMessaging.instance;
   fcmToken = await fbMsg.getToken();
   print("fcmToken : ${fcmToken}을 받았습니다");
