@@ -411,8 +411,7 @@ class _SubChattingPageState extends State<SubChattingPage> {
                                 final check = Check(
                                   checkRead: 'true',
                                 );
-                                client?.updateCheck(
-                                    pastMsg[index].message, check);
+                                client?.updateCheck(localMsg[index].message, check);
                               }
                               return ChatBubbless(
                                 localMsg[index].message!,
@@ -506,10 +505,11 @@ class _SubChattingPageState extends State<SubChattingPage> {
                                 onPressed: () async {
                                   if (_userEnterMessage.isNotEmpty) {
                                     _controller.clear();
+                                    sendMessage(_userEnterMessage, image!, sendName!);
                                   }
 
-                                  sendMessage(_userEnterMessage, image!,
-                                      sendName!);
+                                  _userEnterMessage = "";
+                                  setState((){});
                                   scrollToBottom();
                                 },
                                 icon: const Icon(Icons.send,

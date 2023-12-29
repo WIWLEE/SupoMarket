@@ -3,58 +3,18 @@ import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:supo_market/page/chatting_page/widgets/chatting_page_widgets.dart';
 
-class ChatBubbless extends StatefulWidget {
-  String text;
-  bool isUserMessage;
-  String? userImage;
-  String? username;
-  String currentTime;
-  String checkRead;
-  String imageUrl;
+class ChatBubbless extends StatelessWidget {
+  final String text;
+  final bool isUserMessage;
+  final String? userImage;
+  final String? username;
+  final String currentTime;
+  final String checkRead;
+  final String imageUrl;
 
   ChatBubbless(this.text, this.isUserMessage, this.userImage, this.username,
       this.currentTime, this.checkRead, this.imageUrl,
       {Key? key});
-
-  @override
-  State<StatefulWidget> createState() {
-    return ChatBubblessState();
-  }
-}
-
-class ChatBubblessState extends State<ChatBubbless> {
-  String? checkRead;
-  String? text;
-  bool? isUserMessage;
-  String? userImage;
-  String? username;
-  String? currentTime;
-  String? imageUrl;
-
-  @override
-  void initState() {
-    checkRead = widget.checkRead;
-    text = widget.text;
-    isUserMessage = widget.isUserMessage;
-    userImage = widget.userImage;
-    username = widget.username;
-    currentTime = widget.currentTime;
-    imageUrl = widget.imageUrl;
-    print("initState ChatBubble");
-    super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant ChatBubbless oldWidget) {
-    checkRead = widget.checkRead;
-    text = widget.text;
-    isUserMessage = widget.isUserMessage;
-    userImage = widget.userImage;
-    username = widget.username;
-    currentTime = widget.currentTime;
-    print("did Update Widget : $text + $checkRead");
-    super.didUpdateWidget(oldWidget);
-  }
 
   @override
   Widget build(BuildContext context) {
