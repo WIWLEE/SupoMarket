@@ -141,7 +141,7 @@ class ChattingPageState extends State<ChattingPage> {
                         children: [
 
                           Card(
-                            elevation: 0,
+                            elevation: 0.1,
                             margin: EdgeInsets.only(
                                 top: 5, bottom: 5, left: 20, right: 20),
                             child: Row(
@@ -258,7 +258,7 @@ class ChattingPageState extends State<ChattingPage> {
                               child: Stack(
                                 children: [
                                   Card(
-                                    elevation: 0,
+                                    elevation: 0.1,
                                     margin: EdgeInsets.only(
                                         top: 5, bottom: 5, left: 20, right: 20),
                                     child: Row(
